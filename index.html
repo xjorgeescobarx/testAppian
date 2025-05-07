@@ -98,14 +98,28 @@
 	
 	
 function downloadImage() {
-  const dataURL = stage.toDataURL({ pixelRatio: 2 });
-  const link = document.createElement('a');
-  link.download = 'marcacion.png';
-  link.href = dataURL;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const dataURL = stage.toDataURL({ pixelRatio: 2 });
+
+  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/recuperarDocumento', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjAzYzFmNS1lMDBmLTc3ZDctNzhmNS03YWJmOTEyMmIzZjIifQ.5LzfppXQ4RAUryXlbkq7x7My91U0BCwU5GCpzTzGpw8'
+    },
+    body: JSON.stringify({
+      nombreArchivo: 'marcacion.png',
+      imagenBase64: dataURL
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert('Imagen enviada a APPIAN. ID del documento: ' + data.documentId);
+  })
+  .catch(error => {
+    console.error('Error al enviar la imagen a APPIAN:', error);
+  });
 }
+
 
 
 function deleteSelected() {
