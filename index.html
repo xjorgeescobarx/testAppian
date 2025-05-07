@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -20,11 +19,13 @@
   <div id="controls">
     <button onclick="addSquare()">Añadir Cuadrado</button>
     <button onclick="addTriangle()">Añadir Triángulo</button>
-    <button onclick="downloadImage()">Descargar Imagen</button>
+	<button onclick="downloadImage()">Descargar Imagen</button>	
   </div>
   <div id="container"></div>
 
   <script>
+  
+    let selectedShape = null;
     let stage = new Konva.Stage({
       container: 'container',
       width: 800,
@@ -68,6 +69,11 @@
         fill: 'red',
         draggable: true,
       });
+	  
+	square.on('click', function () {
+	  selectedShape = this;
+	});
+
       layer.add(square);
       layer.draw();
     }
@@ -81,10 +87,16 @@
         closed: true,
         draggable: true,
       });
+	  
+	triangle.on('click', function () {
+	  selectedShape = this;
+	});
+
       layer.add(triangle);
       layer.draw();
     }
-
+	
+	
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
   const link = document.createElement('a');
@@ -94,6 +106,25 @@ function downloadImage() {
   link.click();
   document.body.removeChild(link);
 }
+
+
+function deleteSelected() {
+  if (selectedShape) {
+    selectedShape.destroy();
+    layer.draw();
+    selectedShape = null;
+  }
+}
+
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Delete' && selectedShape) {
+    selectedShape.destroy();
+    layer.draw();
+    selectedShape = null;
+  }
+});
+
   </script>
 </body>
 </html>
