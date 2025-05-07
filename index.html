@@ -20,6 +20,7 @@
   <div id="controls">
     <button onclick="addSquare()">Añadir Cuadrado</button>
     <button onclick="addTriangle()">Añadir Triángulo</button>
+    <button onclick="downloadImage()">Descargar Imagen</button>
   </div>
   <div id="container"></div>
 
@@ -83,6 +84,16 @@
       layer.add(triangle);
       layer.draw();
     }
+
+function downloadImage() {
+  const dataURL = stage.toDataURL({ pixelRatio: 2 });
+  const link = document.createElement('a');
+  link.download = 'marcacion.png';
+  link.href = dataURL;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
   </script>
 </body>
 </html>
