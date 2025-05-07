@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Marcaciones con Kanva</title>
+  <script src="https://cdn.jsdelivr.net/npm/konva@9.2.0/konva.min.js"></script>
+  <style>
+    #container {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    #controls {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sube una imagen y añade marcaciones</h2>
+  <input type="file" id="imageUpload" accept="image/*">
+  <div id="controls">
+    <button onclick="addSquare()">Añadir Cuadrado</button>
+    <button onclick="addTriangle()">Añadir Triángulo</button>
+  </div>
+  <div id="container"></div>
+
+  <script>
+    let stage = new Konva.Stage({
+      container: 'container',
+      width: 800,
+      height: 600,
+    });
+
+    let layer = new Konva.Layer();
+    stage.add(layer);
+
+    let imageObj = new Image();
+
+    document.getElementById('imageUpload').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (evt) {
+        imageObj.onload = function () {
+          const konvaImage = new Konva.Image({
+            image: imageObj,
+            x: 0,
+            y: 0,
+            width: stage.width(),
+            height: stage.height(),
+          });
+          layer.destroyChildren(); // Limpiar capa
+          layer.add(konvaImage);
+          layer.draw();
+        };
+        imageObj.src = evt.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function addSquare() {
+      const square = new Konva.Rect({
+        x: 50,
+        y: 50,
+        width: 50,
+        height: 50,
+        fill: 'red',
+        draggable: true,
+      });
+      layer.add(square);
+      layer.draw();
+    }
+
+    function addTriangle() {
+      const triangle = new Konva.Line({
+        points: [100, 100, 130, 150, 70, 150],
+        fill: 'blue',
+        stroke: 'black',
+        strokeWidth: 2,
+        closed: true,
+        draggable: true,
+      });
+      layer.add(triangle);
+      layer.draw();
+    }
+  </script>
+</body>
+</html>
