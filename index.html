@@ -19,8 +19,7 @@
   <div id="controls">
     <button onclick="addSquare()">Añadir Cuadrado</button>
     <button onclick="addTriangle()">Añadir Triángulo</button>
-    <button onclick="downloadImage()">Descargar Imagen</button>	
-   <button onclick="callAPI()">call API</button>	
+	<button onclick="downloadImage()">Descargar Imagen</button>	
   </div>
   <div id="container"></div>
 
@@ -96,13 +95,14 @@
       layer.add(triangle);
       layer.draw();
     }
-
+	
+	
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
 
   fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian', {
     method: 'POST',
-	mode: 'no-cors',
+	mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
       'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
@@ -113,46 +113,10 @@ function downloadImage() {
     })
   })
   .then(response => response.json())
-  .then(data => {
-    alert('Imagen enviada a APPIAN. ID del documento: ' + data.documentId);
-  })
   .catch(error => {
     console.error('Error al enviar la imagen a APPIAN:', error);
   });
 }
-	
-async function callAPI() {
-            const apiUrl = 'https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian';
-            const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY';
-            const data = {
-                key1: 'value1',
-                key2: 'value2'
-            };
- 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-		    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'API-Key': apiKey
-                    },
-                    body: JSON.stringify(data)
-                });
- 
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ${response.status}');
-                }
- 
-                const responseData = await response.json();
-                console.log('API Response:', responseData);
-                document.getElementById('apiResponse').innerHTML = '<pre>${JSON.stringify(responseData, null, 2)}</pre>';
- 
-            } catch (error) {
-                console.error('Error calling API:', error);
-                document.getElementById('apiResponse').innerHTML = '<p style="color:red;">Error: ${error.message}</p>';
-            }
-        }
 
 
 function deleteSelected() {
