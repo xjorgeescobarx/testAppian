@@ -97,25 +97,32 @@
     }
 	
 	
-function downloadImage() {
-  const dataURL = stage.toDataURL({ pixelRatio: 2 });
-
-  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
-    },
-    body: JSON.stringify({
-      nombreArchivo: 'marcacion.png',
-      imagenBase64: dataURL
-    })
-  })
-  .then(response => response.json())
-  .catch(error => {
-    console.error('Error al enviar la imagen a APPIAN:', error);
-  });
-}
+ async function getCountries() {
+            const apiUrl = 'https://restcountries.com/v3.1/all';
+ 
+            try {
+                const response = await fetch(apiUrl);
+ 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+ 
+                const data = await response.json();
+                console.log('Countries data:', data);
+ 
+                // Display the country names in the div
+                let countryList = '<h2>List of Countries</h2><ul>';
+                data.forEach(country => {
+                    countryList += `<li>${country.name.common}</li>`;
+                });
+                countryList += '</ul>';
+                document.getElementById('countries').innerHTML = countryList;
+ 
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+                document.getElementById('countries').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+            }
+        }
 
 
 function deleteSelected() {
