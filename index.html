@@ -100,11 +100,12 @@
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
 
-  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/recuperarDocumento', {
+  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian', {
     method: 'POST',
+	mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjAzYzFmNS1lMDBmLTc3ZDctNzhmNS03YWJmOTEyMmIzZjIifQ.5LzfppXQ4RAUryXlbkq7x7My91U0BCwU5GCpzTzGpw8'
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
     },
     body: JSON.stringify({
       nombreArchivo: 'marcacion.png',
@@ -119,7 +120,6 @@ function downloadImage() {
     console.error('Error al enviar la imagen a APPIAN:', error);
   });
 }
-
 
 
 function deleteSelected() {
