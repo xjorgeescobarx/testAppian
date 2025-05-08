@@ -121,30 +121,35 @@ function downloadImage() {
   });
 }
 	
- async function getCountries() {
-            const apiUrl = 'https://restcountries.com/v3.1/all';
+function callAPI() {
+            const apiUrl = 'https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian';
+            const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY';
+            const data = {
+                key1: 'value1',
+                key2: 'value2'
+            };
  
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'API-Key': apiKey
+                    },
+                    body: JSON.stringify(data)
+                });
  
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error('HTTP error! status: ${response.status}');
                 }
  
-                const data = await response.json();
-                console.log('Countries data:', data);
- 
-                // Display the country names in the div
-                let countryList = '<h2>List of Countries</h2><ul>';
-                data.forEach(country => {
-                    countryList += `<li>${country.name.common}</li>`;
-                });
-                countryList += '</ul>';
-                document.getElementById('countries').innerHTML = countryList;
+                const responseData = await response.json();
+                console.log('API Response:', responseData);
+                document.getElementById('apiResponse').innerHTML = '<pre>${JSON.stringify(responseData, null, 2)}</pre>';
  
             } catch (error) {
-                console.error('Error fetching countries:', error);
-                document.getElementById('countries').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+                console.error('Error calling API:', error);
+                document.getElementById('apiResponse').innerHTML = '<p style="color:red;">Error: ${error.message}</p>';
             }
         }
 
