@@ -100,17 +100,15 @@
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
  
-  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian', {
+  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/ConvertirDocAppian', {
     method: 'POST',
 	mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/octet-stream',
+      'Appian-Document-Name': 'testImage.png',
       'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
     },
-    body: JSON.stringify({
-      nombreArchivo: 'marcacion.png',
-      imagenBase64: dataURL
-    })
+    body: dataURL
   })
   .then(response => response.json())
   .catch(error => {
