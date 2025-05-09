@@ -95,38 +95,22 @@
       layer.add(triangle);
       layer.draw();
     }
-
-function base64ToBlob(base64, contentType = 'image/png') {
-  const byteCharacters = atob(base64); 
-  const byteArrays = [];
- 
-  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    const slice = byteCharacters.slice(offset, offset + 512);
- 
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
- 
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
- 
-  return new Blob(byteArrays, { type: contentType });
-}
+	
 	
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
-  const blob = base64ToBlob(dataURL, "image/png");
-  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/ConvertirDocAppian', {
+ 
+  fetch('https://capgemini-spain-1016.appiancloud.com/suite/webapi/guardarImagenAppian', {
     method: 'POST',
 	mode: 'cors',
     headers: {
-      'Content-Type': 'application/octet-stream',
-      'Appian-Document-Name': 'testImage.png',
+      'Content-Type': 'application/json',
       'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
     },
-    body: blob
+    body: JSON.stringify({
+      nombreArchivo: 'marcacion.png',
+      imagenBase64: dataURL
+    })
   })
   .then(response => response.json())
   .catch(error => {
