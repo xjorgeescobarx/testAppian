@@ -95,7 +95,15 @@
       layer.add(triangle);
       layer.draw();
     }
-	
+
+function base64ToBinaryManual(base64String) {
+  const binaryString = atob(base64String);
+  const byteArray = [];
+  for (let i = 0; i < binaryString.length; i++) {
+    byteArray.push(binaryString.charCodeAt(i));
+  }
+  return new Uint8Array(byteArray).buffer; 
+}
 	
 function downloadImage() {
   const dataURL = stage.toDataURL({ pixelRatio: 2 });
@@ -108,7 +116,7 @@ function downloadImage() {
       'Appian-Document-Name': 'testImage.png',
       'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiOGRjMzU4YS02MGViLWMxN2ItZmM4Ni00M2JlMmIzNzk2NTYifQ.RR5Y4TwvMfkxiZzcVKER_sRVJMg3gNN307C2_Q4rlqY'
     },
-    body: dataURL
+    body: base64ToBinaryManual(dataURL)
   })
   .then(response => response.json())
   .catch(error => {
